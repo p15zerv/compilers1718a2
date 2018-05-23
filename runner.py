@@ -6,7 +6,7 @@ class ParseError(Exception):
     pass
 
 
-class RuntimeError(Exception):
+class RunError(Exception):
     """ A user defined exception class, to describe runtime errors. """
     pass
 
@@ -102,7 +102,7 @@ class MyParser:
         elif name in self.vars:
             return self.vars[name]
         else:
-            raise RuntimeError('Variable "{}" referenced before assignment.'.format(name))
+            raise RunError('Variable "{}" referenced before assignment.'.format(name))
 
     def recursive_eval(self, sequence):
         """ Recursively evaluates the sequence """
@@ -281,3 +281,6 @@ with open("recursive-descent-parsing.txt", "r") as fp:
         _, lineno, charno = parser.position()
         print("Parser Error: {} at line {} char {}. Found: {}".format(
             perr, lineno, charno + 1, parser.la))
+    except RunError as rerr:
+        _, lineno, charno = parser.position()
+        print("Run Error: {} at line {} char {}".format(rerr, lineno, charno + 1))
