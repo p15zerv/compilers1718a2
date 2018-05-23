@@ -11,7 +11,7 @@ class MyParser:
     for a particular grammar. """
 
     def create_scanner(self, fp):
-        """ Creates a plex scanner for a particular grammar 
+        """ Creates a plex scanner for a particular grammar
         to operate on file object fp. """
 
         # define some pattern constructs
@@ -67,6 +67,7 @@ class MyParser:
 
         # call parsing logic
         self.stmt_list()
+        print('Parsing successful!')
 
     def stmt_list(self):
         if self.la == 'IDENTIFIER' or self.la == 'print':
@@ -93,8 +94,7 @@ class MyParser:
             self.term()
             self.term_tail()
         else:
-            raise ParseError(
-                'in expr: ( or IDENTIFIER or BOOL or not expected')
+            raise ParseError('in expr: ( or IDENTIFIER or BOOL or not expected')
 
     def term_tail(self):
         if self.la == 'or':
@@ -104,16 +104,14 @@ class MyParser:
         elif self.la == 'IDENTIFIER' or self.la == 'print' or self.la is None or self.la == ')':
             return
         else:
-            raise ParseError(
-                'in term_tail: "or" or IDENTIFIER or print or None or ) expected')
+            raise ParseError('in term_tail: "or" or IDENTIFIER or print or None or ) expected')
 
     def term(self):
         if self.la == '(' or self.la == 'IDENTIFIER' or self.la == 'BOOL' or self.la == 'not':
             self.factor()
             self.factor_tail()
         else:
-            raise ParseError(
-                'in term: ( or IDENTIFIER or BOOL or not expected')
+            raise ParseError('in term: ( or IDENTIFIER or BOOL or not expected')
 
     def factor_tail(self):
         if self.la == 'and':
@@ -123,8 +121,7 @@ class MyParser:
         elif self.la == 'or' or self.la == 'IDENTIFIER' or self.la == 'print' or self.la is None or self.la == ')':
             return
         else:
-            raise ParseError(
-                'in factor_tail: and or "or" or IDENTIFIER or print or ) or None expected')
+            raise ParseError('in factor_tail: and or "or" or IDENTIFIER or print or ) or None expected')
 
     def factor(self):
         if self.la == '(' or self.la == 'IDENTIFIER' or self.la == 'BOOL':
@@ -182,5 +179,4 @@ with open("recursive-descent-parsing.txt", "r") as fp:
         print("Scanner Error: at line {} char {}".format(lineno, charno + 1))
     except ParseError as perr:
         _, lineno, charno = parser.position()
-        print("Parser Error: {} at line {} char {}. Found: {}".format(
-            perr, lineno, charno + 1, parser.la))
+        print("Parser Error: {} at line {} char {}. Found: {}".format(perr, lineno, charno + 1, parser.la))
